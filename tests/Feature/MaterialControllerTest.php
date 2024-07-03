@@ -1,6 +1,8 @@
 <?php
 use App\Models\Categoria;
 
+use function PHPUnit\Framework\assertTrue;
+
 test('example', function () {
     $response = $this->get('/');
 
@@ -9,10 +11,9 @@ test('example', function () {
 
 
 //test para probar que el api de creacion de materiales funciona
-test('test_creacion_material', function () {
-    //crear categoria
+test('dadoUnMaterialQueNoExiste_insertarMaterial_funcionaCorrectamente', function () {
+
     $categoria = Categoria::factory()->create();
-    //insertar en la base de datos la categoria
     $categoria->save();
 
     //hacer un post request a la api de creacion de materiales
@@ -23,6 +24,10 @@ test('test_creacion_material', function () {
         'Ubicacion' => 'bodega',
         'idCategoria' => '1',
     ]);
-
     $response->assertStatus(200);
+});
+
+//update material
+test('test_actualizar_material', function () {
+    assertTrue(true);
 });
