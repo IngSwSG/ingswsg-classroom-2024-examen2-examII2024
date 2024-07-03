@@ -14,6 +14,14 @@ class MaterialController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
+
+
+    public function index()
+    {
+         $materiales = Material::with('categoria')->get();
+         return response()->json($materiales);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
