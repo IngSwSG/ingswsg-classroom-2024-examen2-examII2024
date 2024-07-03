@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Categoria extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nombre'
+    ];
+
+    public function materiales()
+    {
+        return $this->hasMany(Material::class);
+    }
 }

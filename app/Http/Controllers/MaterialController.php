@@ -12,7 +12,7 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        $materiales = Material::all();
+        $materiales = Material::with('categoria')->get();
 
         return response()->json($materiales);
     }

@@ -16,9 +16,9 @@ class Material extends Model
 
     ];
 
-    public function material()
+    public function categoria()
     {
-        return $this->belongsTo(Material::class);
+        return $this->belongsTo(Categoria::class, 'idCategoria');
     }
 
 }
