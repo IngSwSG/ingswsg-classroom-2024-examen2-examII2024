@@ -8,5 +8,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('/material', [MaterialController::class, 'index']);
 Route::post('/material', [MaterialController::class, 'store']);
 
