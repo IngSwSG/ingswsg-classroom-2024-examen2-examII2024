@@ -5,15 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Requisicion extends Model
+class ItemRequisicion extends Model
 {
-   
     protected $fillable = [
-        'IdRequisicion',
-    'fecha',
-    'estado',
+        'IdItemRequisicion',
+        'Cantidad',
+        'CantidadAprobada',
     ];
-   
-
     use HasFactory;
 }
