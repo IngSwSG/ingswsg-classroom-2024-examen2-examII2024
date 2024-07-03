@@ -14,10 +14,7 @@ class MaterialController extends Controller
     {
         $materiales = Material::all();
 
-        return response()->json([
-            'status' => true,
-            'Materiales' => $materiales
-        ]);
+        return response()->json($materiales);
     }
 
     /**
