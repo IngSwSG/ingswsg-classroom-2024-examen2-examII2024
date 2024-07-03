@@ -30,6 +30,10 @@ class MaterialController extends Controller
         $material->Ubicacion = $request->Ubicacion;
         $material->idCategoria = $request->idCategoria;
         $material->save();
+        //retornar ok
+        return response()->json([
+            'status' => true,
+            'products' => $material]);
     }
 
     /**
