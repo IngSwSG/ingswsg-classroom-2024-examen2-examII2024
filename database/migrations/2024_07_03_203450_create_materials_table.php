@@ -12,7 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('materials', function (Blueprint $table) {
-            $table->id();
+            $table->id('idMaterial');
+            $table->integer('codigo');
+            $table->string('unidadMedida');
+            $table->string('descripcion');
+            $table->string('ubicacion');
+            $table->unsignedBigInteger('idCategoria');
+            $table->foreign('idCategoria')->references('idCategoria')->on('categorias');
             $table->timestamps();
         });
     }
