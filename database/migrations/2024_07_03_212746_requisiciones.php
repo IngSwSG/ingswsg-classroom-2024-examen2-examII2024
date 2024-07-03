@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRequisicionesTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -12,7 +12,7 @@ class CreateRequisicionesTable extends Migration
             $table->id('idRequisicion');
             $table->datetime('fecha');
             $table->string('estado');
-            $table->unsignedBigInteger('idUsuario');
+            $table->integer('idUsuario');
             $table->timestamps();
 
         });
@@ -22,4 +22,4 @@ class CreateRequisicionesTable extends Migration
     {
         Schema::dropIfExists('requisiciones');
     }
-}
+};
