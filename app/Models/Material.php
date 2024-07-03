@@ -14,4 +14,9 @@ class Material extends Model
         'Ubicacion',
     ];
 
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
+    }
+
 }
