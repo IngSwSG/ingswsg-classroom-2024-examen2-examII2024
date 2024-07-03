@@ -4,23 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateRequisicionsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('requisicions', function (Blueprint $table) {
-            $table->id();
+            $table->id('idRequisicion');
+            $table->dateTime('fecha');
+            $table->string('estado');
+            $table->foreignId('idUsuario')->constrained('usuarios'); // Assuming you have a usuarios table
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('requisicions');
     }
