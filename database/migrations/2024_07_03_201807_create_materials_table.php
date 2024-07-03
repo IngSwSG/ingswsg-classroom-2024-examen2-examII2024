@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->integer('Codigo');
-            $table->string('unidad de medida');
+            $table->string('unidad_de_medida')->nullable();
             $table->string('Descripcion');
             $table->string('Ubicacion');
             $table->unsignedBigInteger('idCategoria');
