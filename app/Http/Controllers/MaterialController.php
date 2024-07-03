@@ -14,10 +14,7 @@ class MaterialController extends Controller
     {
         $materiales = Material::all();
 
-        return response()->json([
-            'status' => true,
-            'Materiales' => $materiales
-        ]);
+        return response()->json($materiales);
     }
 
     /**
@@ -25,7 +22,14 @@ class MaterialController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //guardado de materiales entrastes
+        $material = new Material();
+        $material->Codigo = $request->Codigo;
+        $material->unidad_de_medida = $request->unidad_de_medida;
+        $material->Descripcion = $request->Descripcion;
+        $material->Ubicacion = $request->Ubicacion;
+        $material->idCategoria = $request->idCategoria;
+        $material->save();
     }
 
     /**
