@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('material_unidads', function (Blueprint $table) {
-            $table->id();
+            $table->id('IdMaterialUnidad');
+            $table->string('Material');
+            $table->unsignedBigInteger('IdUnidad');
             $table->timestamps();
+
+
+            $table->foreign('IdUnidad')->references('IdUnidad')->on('Unidads');
         });
     }
 
