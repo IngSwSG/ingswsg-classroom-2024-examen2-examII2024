@@ -14,6 +14,9 @@ class Unidad extends Model
     public function materialesUnidades() 
    {
      return $this->hasMany(MaterialUnidad::class, 'idUnidad'); 
+     return $this->hasMany(Presupuesto::class, 'idUnidad'); 
   }
+
+
 
 }

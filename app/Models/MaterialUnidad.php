@@ -17,6 +17,7 @@ class MaterialUnidad extends Model
   { 
 
     return $this->belongsTo(Unidad::class, 'idUnidad'); 
+    return $this->belongsTo(Presupuesto::class, 'idPresupuesto'); 
   }
 
 }
