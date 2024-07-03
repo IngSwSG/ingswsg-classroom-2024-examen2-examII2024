@@ -50,6 +50,23 @@ class MaterialController extends Controller
     public function update(Request $request, Material $material)
     {
         //
+        $Data = $request->validate([
+            'Codigo' => 'required',
+            'unidad_de_medida' => 'required',
+            'Descripcion' => 'required',
+            'Ubicacion' => 'required',
+            'idCategoria' => 'required'
+        ]);
+
+        $material -> update($Data);
+
+        $material->save();
+
+        return response()->json([
+            'message' => 'Material actualizado exitosamente',
+            'material' => $material
+        ]);
+
     }
 
     /**
