@@ -20,7 +20,7 @@ class MaterialController extends Controller
             'unidadMedida' => 'required|string',
             'descripcion' => 'required|string',
             'ubicacion' => 'required|string',
-            'idCategoria' => 'required|exists:categorias,idCategoria'
+            'idCategoria' => 'required|exists:categoria,idCategoria'
         ]);
 
         $material = Material::create([
@@ -33,4 +33,30 @@ class MaterialController extends Controller
 
         return redirect()->route('materials.index')->with('success', 'Material creado exitosamente');
     }
-}
+
+    public function edit($id)
+    {
+        $material = Material::findOrFail($id);
+        return view('materials.edit', compact('material'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'unidadMedida' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255',
+            'ubicacion' => 'required|string|max:255',
+            'categoria_id' => 'required|exists:categoria,idCategoria',
+        ]);
+
+        $material = Material::findOrFail($id);
+        $material->update([
+            'unidadMedida' => $request->unidadMedida,
+            'descripcion' => $request->descripcion,
+            'ubicacion' => $request->ubicacion,
+            'categoria_id' => $request->categoria_id,
+        ]);
+
+        return redirect()->route('material.edit')->with('success', 'Material actualizado correctamente.');
+    }
+};
