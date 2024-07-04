@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('descripcion');
             $table->string('ubicacion');
             $table->unsignedBigInteger('idCategoria');
-            $table->foreign('idCategoria')->references('idCategoria')->on('categoria');
+            $table->foreign('idCategoria')->references('idCategoria')->on('categorias');
             $table->timestamps();
         });
     }

@@ -12,3 +12,4 @@ Route::get('/material/create', [MaterialController::class, 'create'])->name('mat
 Route::post('/material', [MaterialController::class, 'store'])->name('materials.store');
 Route::get('/material/edit', [MaterialController::class, 'edit'])->name('materials.edit');
 Route::put('/material', [MaterialController::class, 'update'])->name('materials.update');
+Route::get('/materiales', [MaterialController::class, 'index'])->name('materials.index');

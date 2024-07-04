@@ -35,4 +35,10 @@ class MaterialController extends Controller
 
         return redirect()->route('materials.edit')->with('success', 'Material actualizado correctamente.');
     }
+
+    public function index()
+    {
+        $materials = Material::all();
+        return view('materials.index', compact('materials'));
+    }
 };
