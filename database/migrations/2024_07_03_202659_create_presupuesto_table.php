@@ -4,11 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePresupuestosTable extends Migration
+class CreatePresupuestoTable extends Migration
 {
     public function up()
     {
-        Schema::create('presupuestos', function (Blueprint $table) {
+        Schema::create('presupuesto', function (Blueprint $table) {
             $table->id('codigoPresupuesto');
             $table->string('nombrePresupuesto');
             $table->timestamps();
@@ -17,6 +17,6 @@ class CreatePresupuestosTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('presupuestos');
+        Schema::dropIfExists('presupuesto');
     }
 };
