@@ -21,9 +21,9 @@ class MaterialController extends Controller
     public function update(Request $request, $codigo)
     {
         $validated = $request->validate([
-            'unidadMedida' => 'sometimes|required',
-            'descripcion' => 'sometimes|required',
-            'ubicacion' => 'sometimes|required',
+            'unidadMedida' => 'sometimes|required|max:255',
+            'descripcion' => 'sometimes|required|max:255',
+            'ubicacion' => 'sometimes|required|max:255',
             'idCategoria' => 'sometimes|required',
         ]);
 
