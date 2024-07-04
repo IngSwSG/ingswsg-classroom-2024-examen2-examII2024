@@ -7,6 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::resource('material', MaterialController::class);
 
 Route::get('/material/create', [MaterialController::class, 'create'])->name('materials.create');
 Route::post('/material', [MaterialController::class, 'store'])->name('materials.store');
