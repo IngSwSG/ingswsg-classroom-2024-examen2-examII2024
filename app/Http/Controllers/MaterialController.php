@@ -36,4 +36,21 @@ class MaterialController extends Controller
             'material' => $material
         ]);
     }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'unidadMedida' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255',
+            'ubicacion' => 'required|string|max:255',
+            'categoria_id' => 'required|exists:categorias,idCategoria',
+        ]);
+
+        $material = Material::create($validatedData);
+
+        return response()->json([
+            'message' => 'Material creado',
+            'material' => $material
+        ]);
+    }
 }
