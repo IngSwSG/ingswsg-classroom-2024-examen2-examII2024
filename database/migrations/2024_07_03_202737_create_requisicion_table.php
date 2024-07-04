@@ -12,7 +12,7 @@ class CreateRequisicionsTable extends Migration
             $table->id('idRequisicion');
             $table->dateTime('fecha');
             $table->string('estado');
-            $table->foreignId('idUsuario')->constrained('usuarios'); // Assuming you have a usuarios table
+            $table->foreignId('idUsuario')->constrained('usuarios');
             $table->timestamps();
         });
     }
