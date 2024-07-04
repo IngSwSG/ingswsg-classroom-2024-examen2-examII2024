@@ -13,7 +13,6 @@ class CreateRequisicionTable extends Migration
             $table->dateTime('fecha');
             $table->string('estado');
             $table->string('idUsuario');
-            $table->foreign('idUsuario')->references('idUsuario')->on('usuarios');
             $table->timestamps();
         });
     }
