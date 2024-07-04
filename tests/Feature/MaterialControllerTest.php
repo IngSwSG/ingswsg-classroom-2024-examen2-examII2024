@@ -6,19 +6,17 @@ use Tests\TestCase;
 use App\Models\Categoria;
 use App\Models\Material;
 
-class MaterialTest extends TestCase
+class MaterialControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
     public function puede_crear_material()
     {
-        // Crear una categoría para asociarla con el material
         $categoria = Categoria::create([
             'nombre' => 'Categoría de Prueba'
         ]);
 
-        // Datos del material
         $data = [
             'unidadMedida' => 'Metro',
             'descripcion' => 'Material de prueba',
@@ -26,13 +24,10 @@ class MaterialTest extends TestCase
             'idCategoria' => $categoria->idCategoria,
         ];
 
-        // Hacer una solicitud POST a la ruta de creación de material
         $response = $this->postJson('/api/materiales', $data);
 
-        // Verificar que la respuesta sea exitosa
         $response->assertStatus(201);
 
-        // Verificar que los datos del material se encuentren en la base de datos
         $this->assertDatabaseHas('materials', [
             'unidadMedida' => 'Metro',
             'descripcion' => 'Material de prueba',
@@ -52,14 +47,13 @@ class MaterialTest extends TestCase
             'idCategoria' => 999, // ID de categoría que no existe
         ];
 
-        // Hacer una solicitud POST a la ruta de creación de material
         $response = $this->postJson('/api/materiales', $data);
 
-        // Verificar que la respuesta tenga errores de validación
         $response->assertStatus(400)
                  ->assertJsonValidationErrors(['unidadMedida', 'descripcion', 'ubicacion', 'idCategoria']);
     }
-    public function puede_actualizar_material()
+    /** @test */
+    public function actualizar_material()
     {
         $categoria = Categoria::create([
             'nombre' => 'Categoría de Prueba'
@@ -92,7 +86,8 @@ class MaterialTest extends TestCase
  ]);
 }
 
-public function puede_obtener_lista_de_materiales_con_categorias()
+        /** @test */
+public function obtener_lista_de_materiales_con_categorias()
     {
         $categoria = Categoria::create([
             'nombre' => 'Categoría de Prueba'
@@ -125,4 +120,36 @@ public function puede_obtener_lista_de_materiales_con_categorias()
             ]
 ]);
 }
+ /** @test */
+  public function dadoUnMaterialQueNoExiste_insertarMaterial_funcionaCorrectamente()
+  {
+      $categoria = Categoria::create([
+          'nombre' => 'Categoría de Prueba'
+      ]);
+
+      $data = [
+          'unidadMedida' => 'Kilogramo',
+          'descripcion' => 'Material inexistente',
+          'ubicacion' => 'Almacén 3',
+          'idCategoria' => $categoria->idCategoria,
+      ];
+
+      $this->assertDatabaseMissing('materials', [
+          'unidadMedida' => 'Kilogramo',
+          'descripcion' => 'Material inexistente',
+          'ubicacion' => 'Almacén 3',
+          'idCategoria' => $categoria->idCategoria,
+      ]);
+
+      $response = $this->postJson('/api/materiales', $data);
+
+      $response->assertStatus(201);
+
+      $this->assertDatabaseHas('materials', [
+          'unidadMedida' => 'Kilogramo',
+          'descripcion' => 'Material inexistente',
+          'ubicacion' => 'Almacén 3',
+          'idCategoria' => $categoria->idCategoria,
+      ]);
+  }
 }
