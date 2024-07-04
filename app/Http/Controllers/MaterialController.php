@@ -81,4 +81,20 @@ class MaterialController extends Controller
         return response()->json(['error' => 'Error al actualizar el material', 'details' => $e->getMessage()], 500);
 }
 }
+
+public function obtenerMateriales()
+{
+    try {
+        // Obtener todos los materiales con sus categorías asociadas
+        $materiales = Material::with('categoria')->get();
+
+        // Devolver una respuesta exitosa con la lista de materiales y categorías
+        return response()->json(['materiales' => $materiales], 200);
+    } catch (\Exception $e) {
+        // Loggear cualquier error que ocurra durante el proceso
+        Log::error('Error al obtener la lista de materiales: ' . $e->getMessage());
+        // Devolver una respuesta de error con los detalles
+        return response()->json(['error' => 'Error al obtener la lista de materiales', 'details' => $e->getMessage()], 500);
+}
+}
 }

@@ -91,4 +91,38 @@ class MaterialTest extends TestCase
             'idCategoria' => $categoria->idCategoria,
  ]);
 }
+
+public function puede_obtener_lista_de_materiales_con_categorias()
+    {
+        $categoria = Categoria::create([
+            'nombre' => 'Categoría de Prueba'
+        ]);
+
+        $material = Material::create([
+            'unidadMedida' => 'Metro',
+            'descripcion' => 'Material de prueba',
+            'ubicacion' => 'Almacén 1',
+            'idCategoria' => $categoria->idCategoria,
+        ]);
+
+        $response = $this->getJson('/api/obtener-materiales');
+
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'materiales' => [
+                [
+                    'codigo' => $material->codigo,
+                    'unidadMedida' => 'Metro',
+                    'descripcion' => 'Material de prueba',
+                    'ubicacion' => 'Almacén 1',
+                    'idCategoria' => $categoria->idCategoria,
+                    'categoria' => [
+                        'idCategoria' => $categoria->idCategoria,
+                        'nombre' => 'Categoría de Prueba'
+                    ]
+                ]
+            ]
+]);
+}
 }
