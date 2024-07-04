@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('unidads', function (Blueprint $table) {
             $table->id('idUnidad');
             $table->string('nombre');
-            $table->integer('codigo_presupuesto');
+            $table->unsignedBigInteger('codigo_presupuesto');
             $table->foreign('codigo_presupuesto')->references('codigoPresupuesto')->on('presupuestos')->onDelete('cascade');
             $table->timestamps();
         });

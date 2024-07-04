@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('cantidadAprobada');
             $table->unsignedBigInteger('idRequisicion');
             $table->foreign('idRequisicion')->references('idRequisicion')->on('requisicions');
-            $table->integer('idMaterial');
+            $table->unsignedBigInteger('idMaterial');
             $table->foreign('idMaterial')->references('codigo')->on('materials');
             $table->timestamps();
 });
