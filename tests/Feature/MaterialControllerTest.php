@@ -51,4 +51,31 @@ class MaterialControllerTest extends TestCase
             'categoria_id' => $categoria->id,
         ]);
     }
+
+    public function test_VerificaIngresoCorrectoDeMateriales()
+    {
+    
+        $data = [
+            'unidadMedida' => 'ml',
+            'descripcion' => 'examen 2 test',
+            'ubicacion' => 'caja',
+            'categoria_nombre' => 'juguetes'
+        ];
+
+       
+        $response = $this->post('/materiales', $data);
+
+
+        $response->assertRedirect(route('materiales.index'));
+        $this->assertDatabaseHas('materials', [
+            'unidadMedida' => 'ml',
+            'descripcion' => 'examen 2 test',
+            'ubicacion' => 'caja',
+        ]);
+
+        $this->assertDatabaseHas('categorias', [
+            'nombre' => 'juguetes',
+        ]);
+    }
+
 }
