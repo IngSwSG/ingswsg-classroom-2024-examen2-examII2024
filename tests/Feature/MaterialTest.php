@@ -59,4 +59,36 @@ class MaterialTest extends TestCase
         $response->assertStatus(400)
                  ->assertJsonValidationErrors(['unidadMedida', 'descripcion', 'ubicacion', 'idCategoria']);
     }
+    public function puede_actualizar_material()
+    {
+        $categoria = Categoria::create([
+            'nombre' => 'Categoría de Prueba'
+        ]);
+
+        $material = Material::create([
+            'unidadMedida' => 'Metro',
+            'descripcion' => 'Material de prueba',
+            'ubicacion' => 'Almacén 1',
+            'idCategoria' => $categoria->idCategoria,
+        ]);
+
+        $data = [
+            'unidadMedida' => 'Litro',
+            'descripcion' => 'Material actualizado',
+            'ubicacion' => 'Almacén 2',
+            'idCategoria' => $categoria->idCategoria,
+        ];
+
+        $response = $this->putJson("/api/actualizar-material/{$material->codigo}", $data);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('materials', [
+            'codigo' => $material->codigo,
+            'unidadMedida' => 'Litro',
+            'descripcion' => 'Material actualizado',
+            'ubicacion' => 'Almacén 2',
+            'idCategoria' => $categoria->idCategoria,
+ ]);
+}
 }
