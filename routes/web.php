@@ -11,6 +11,9 @@ Route::get('/materiales/create', [MaterialController::class, 'create'])->name('m
 // Ruta para almacenar el material
 Route::post('/materiales', [MaterialController::class, 'store'])->name('materiales.store');
 
+// Ruta para mostrar vista
+Route::get('/materiales/index', [MaterialController::class, 'index'])->name('materiales.index');
+
 // Ruta para mostrar un material específico
 Route::get('/materiales/{id}', [MaterialController::class, 'show'])->name('materiales.show');
 

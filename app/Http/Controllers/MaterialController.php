@@ -46,9 +46,17 @@ class MaterialController extends Controller
         ]);
 
     
-        return redirect()->route('materiales.show', ['id' => $material->id])->with('success', 'Material y categoría creados correctamente.');
+        return redirect()->route('materiales.index')->with('success', 'Material y categoría creados correctamente.');
     }
 
+    public function index()
+    {
+        // Obtener todos los materiales con sus categorías asociadas
+        $materiales = Material::with('categoria')->get();
+
+        // Retornar la vista con los materiales y las categorías
+        return view('materials.index', compact('materiales'));
+    }
  
     public function show($id)
     {
@@ -105,5 +113,8 @@ class MaterialController extends Controller
  
          return redirect()->route('materiales.show', ['id' => $material->id])->with('success', 'Material actualizado correctamente.');
      }
+
+     
+
  }
 
