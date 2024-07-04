@@ -40,7 +40,7 @@
         </div>
         <div class="form-group">
             <label for="idCategoria">Categoría</label>
-            <select class="form-control" id="idCategoria" name="idCategoria" required>
+            <input type="text" class="form-control" id="idCategoria" name="idCategoria" value="{{ old('idCategoria') }}" required>
                 @foreach ($categorias as $categoria)
                     <option value="{{ $categoria->nombre }}">{{ $categoria->nombre }}</option>
                 @endforeach

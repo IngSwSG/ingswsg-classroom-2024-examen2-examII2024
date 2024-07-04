@@ -20,7 +20,7 @@ class MaterialController extends Controller
             'unidadMedida' => 'required|string',
             'descripcion' => 'required|string',
             'ubicacion' => 'required|string',
-            'idCategoria' => 'required|string|exists:categoria,nombre' 
+            'idCategoria' => 'required|string|exists:categorias,nombre' 
         ]);
 
         $material = Material::create([
