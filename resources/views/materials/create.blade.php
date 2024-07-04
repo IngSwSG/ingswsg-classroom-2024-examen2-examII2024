@@ -1,5 +1,3 @@
-resources/views/materials/create.blade.php
-
 <!DOCTYPE html>
 <html>
 <head>

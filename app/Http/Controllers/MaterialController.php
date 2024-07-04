@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Material;
@@ -13,50 +14,25 @@ class MaterialController extends Controller
         return view('materials.create', compact('categorias'));
     }
 
-    public function store(Request $request)
+    public function edit()
+    {
+        $categorias = Categoria::all();
+        return view('materials.edit', compact('categorias'));
+    }
+
+    public function update(Request $request)
     {
         $validated = $request->validate([
-            'codigo' => 'required|integer',
-            'unidadMedida' => 'required|string',
-            'descripcion' => 'required|string',
-            'ubicacion' => 'required|string',
-            'idCategoria' => 'required|exists:categoria,idCategoria'
-        ]);
-
-        $material = Material::create([
-            'codigo' => $validated['codigo'],
-            'unidadMedida' => $validated['unidadMedida'],
-            'descripcion' => $validated['descripcion'],
-            'ubicacion' => $validated['ubicacion'],
-            'idCategoria' => $validated['idCategoria']
-        ]);
-
-        return redirect()->route('materials.index')->with('success', 'Material creado exitosamente');
-    }
-
-    public function edit($id)
-    {
-        $material = Material::findOrFail($id);
-        return view('materials.edit', compact('material'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
+            'id' => 'required|integer|exists:materials,id',
             'unidadMedida' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255',
             'ubicacion' => 'required|string|max:255',
-            'categoria_id' => 'required|exists:categoria,idCategoria',
+            'idCategoria' => 'required|exists:categorias,idCategoria',
         ]);
 
-        $material = Material::findOrFail($id);
-        $material->update([
-            'unidadMedida' => $request->unidadMedida,
-            'descripcion' => $request->descripcion,
-            'ubicacion' => $request->ubicacion,
-            'categoria_id' => $request->categoria_id,
-        ]);
+        $material = Material::findOrFail($validated['id']);
+        $material->update($validated);
 
-        return redirect()->route('material.edit')->with('success', 'Material actualizado correctamente.');
+        return redirect()->route('materials.edit')->with('success', 'Material actualizado correctamente.');
     }
 };

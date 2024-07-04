@@ -8,7 +8,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/material/create', [MaterialController::class, 'create'])->name('material.create');
-Route::post('/material', [MaterialController::class, 'store'])->name('material.store');
-Route::get('/material/edit', [MaterialController::class, 'edit'])->name('material.edit');
-Route::post('/material', [MaterialController::class, 'update'])->name('material.update');
+Route::get('/material/create', [MaterialController::class, 'create'])->name('materials.create');
+Route::post('/material', [MaterialController::class, 'store'])->name('materials.store');
+Route::get('/material/edit', [MaterialController::class, 'edit'])->name('materials.edit');
+Route::put('/material', [MaterialController::class, 'update'])->name('materials.update');
