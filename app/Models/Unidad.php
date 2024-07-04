@@ -24,5 +24,5 @@ class Unidad extends Model
     public function presupuesto()
     {
         return $this->belongsTo(Presupuesto::class, 'presupuesto_id', 'codigoPresupuesto');
-    }
+}
 }

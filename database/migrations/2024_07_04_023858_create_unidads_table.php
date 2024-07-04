@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('presupuestos', function (Blueprint $table) {
-            $table->id('codigoPresupuesto');
-            $table->string('nombrePresupuesto');
+        Schema::create('unidads', function (Blueprint $table) {
+            $table->id('idUnidad');
+            $table->string('nombre');
+            $table->integer('codigo_presupuesto');
+            $table->foreign('codigo_presupuesto')->references('codigoPresupuesto')->on('presupuestos')->onDelete('cascade');
             $table->timestamps();
-    });
+        });
     }
 
     /**
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('presupuestos');
+        Schema::dropIfExists('unidads');
     }
 };
