@@ -65,4 +65,45 @@ class MaterialController extends Controller
       
         return response()->json($material);
     }
-}
+
+     // Mostrar el formulario de edición
+     public function edit($id)
+     {
+         $material = Material::findOrFail($id);
+         $categorias = Categoria::all();
+         return view('materials.update', compact('material', 'categorias'));
+     }
+ 
+     // Actualizar un material
+     public function update(Request $request, $id)
+     {
+         // Validar la solicitud
+         $request->validate([
+             'unidadMedida' => 'sometimes|required|string',
+             'descripcion' => 'sometimes|required|string',
+             'ubicacion' => 'sometimes|required|string',
+             'categoria_id' => 'nullable|exists:categorias,id', 
+             'categoria_nombre' => 'nullable|string' 
+         ]);
+ 
+         $material = Material::findOrFail($id);
+ 
+         if ($request->input('categoria_id')) {
+             $categoria = Categoria::find($request->input('categoria_id'));
+         } elseif ($request->input('categoria_nombre')) {
+             $categoria = Categoria::create([
+                 'nombre' => $request->input('categoria_nombre')
+             ]);
+         }
+ 
+         $material->update([
+             'unidadMedida' => $request->input('unidadMedida', $material->unidadMedida),
+             'descripcion' => $request->input('descripcion', $material->descripcion),
+             'ubicacion' => $request->input('ubicacion', $material->ubicacion),
+             'categoria_id' => isset($categoria) ? $categoria->id : $material->categoria_id,
+         ]);
+ 
+         return redirect()->route('materiales.show', ['id' => $material->id])->with('success', 'Material actualizado correctamente.');
+     }
+ }
+
