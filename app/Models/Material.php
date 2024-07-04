@@ -13,7 +13,8 @@ class Material extends Model
        
         'unidadMedida',
         'descripcion',
-        'ubicacion'
+        'ubicacion',
+        'categoria_id'
     ];
     public function categoria()
     {

@@ -16,7 +16,14 @@ return new class extends Migration
             $table->string('unidadMedida');
             $table->string('descripcion');
             $table->string('ubicacion');
+            $table->unsignedBigInteger('categoria_id'); // Columna para la clave foránea
+
+            $table->foreign('categoria_id')
+                  ->references('id')
+                  ->on('categorias')
+                  ->onDelete('cascade');
             $table->timestamps();
+
         });
     }
 
