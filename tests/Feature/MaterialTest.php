@@ -1,56 +1,62 @@
 <?php
-
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\Material;
 use App\Models\Categoria;
+use App\Models\Material;
 
 class MaterialTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testInsertarMaterialConCategoriaExitosamente()
+    /** @test */
+    public function puede_crear_material()
     {
-        // Crear una categoría
+        // Crear una categoría para asociarla con el material
         $categoria = Categoria::create([
-            'idCategoria' => 1,
-            'nombre' => 'Metales'
+            'nombre' => 'Categoría de Prueba'
         ]);
 
         // Datos del material
-        $materialData = [
-            'unidadMedida' => 'Kilogramos',
-            'descripcion' => 'Acero inoxidable',
-            'ubicacion' => 'Almacén A',
+        $data = [
+            'unidadMedida' => 'Metro',
+            'descripcion' => 'Material de prueba',
+            'ubicacion' => 'Almacén 1',
             'idCategoria' => $categoria->idCategoria,
         ];
 
-        // Enviar solicitud POST para insertar material
-        $response = $this->postJson('/insertar-material', $materialData);
+        // Hacer una solicitud POST a la ruta de creación de material
+        $response = $this->postJson('/api/materiales', $data);
 
-        // Registrar la respuesta para depuración
-        info('Response:', $response->json());
+        // Verificar que la respuesta sea exitosa
+        $response->assertStatus(201);
 
-        // Verificar la respuesta
-        $response->assertStatus(201)
-                 ->assertJson([
-                     'message' => 'Material creado exitosamente',
-                     'material' => [
-                         'unidadMedida' => $materialData['unidadMedida'],
-                         'descripcion' => $materialData['descripcion'],
-                         'ubicacion' => $materialData['ubicacion'],
-                         'idCategoria' => $materialData['idCategoria'],
-                     ],
-                 ]);
-
-        // Verificar que el material se ha insertado en la base de datos
+        // Verificar que los datos del material se encuentren en la base de datos
         $this->assertDatabaseHas('materials', [
-            'unidadMedida' => $materialData['unidadMedida'],
-            'descripcion' => $materialData['descripcion'],
-            'ubicacion' => $materialData['ubicacion'],
-            'idCategoria' => $materialData['idCategoria'],
+            'unidadMedida' => 'Metro',
+            'descripcion' => 'Material de prueba',
+            'ubicacion' => 'Almacén 1',
+            'idCategoria' => $categoria->idCategoria,
         ]);
+    }
+
+    /** @test */
+    public function valida_datos_para_crear_material()
+    {
+        // Datos incompletos o inválidos para el material
+        $data = [
+            'unidadMedida' => '',
+            'descripcion' => '',
+            'ubicacion' => '',
+            'idCategoria' => 999, // ID de categoría que no existe
+        ];
+
+        // Hacer una solicitud POST a la ruta de creación de material
+        $response = $this->postJson('/api/materiales', $data);
+
+        // Verificar que la respuesta tenga errores de validación
+        $response->assertStatus(400)
+                 ->assertJsonValidationErrors(['unidadMedida', 'descripcion', 'ubicacion', 'idCategoria']);
     }
 }

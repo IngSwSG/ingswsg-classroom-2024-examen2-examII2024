@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Categoria extends Model
 {
     use HasFactory;
-
+    public $timestamps = false;
+    protected $table = 'categorias';
+    protected $primaryKey = 'idCategoria';
     protected $fillable = ['nombre'];
 
     public function materials()
     {
-        return $this->hasMany(Material::class, 'idCategoria', 'idCategoria');
+        return $this->hasMany(Material::class, 'idCategoria');
     }
 }
 

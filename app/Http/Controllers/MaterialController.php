@@ -5,41 +5,48 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Material;
 use App\Models\Categoria;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 
 class MaterialController extends Controller
 {
-    public function insertarMaterialConCategoria(Request $request)
+    public function crearMaterial(Request $request)
     {
-        Log::info('Datos recibidos para insertar material:', $request->all());
-
-        $request->validate([
-            'unidadMedida' => 'required|string',
-            'descripcion' => 'required|string',
-            'ubicacion' => 'required|string',
-            'idCategoria' => 'required|exists:categorias,idCategoria'
+        // Validar los datos de entrada
+        $validator = Validator::make($request->all(), [
+            'unidadMedida' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255',
+            'ubicacion' => 'required|string|max:255',
+            'idCategoria' => 'required|integer|exists:categorias,idCategoria',
         ]);
 
-        $material = new Material();
-        $material->unidadMedida = $request->unidadMedida;
-        $material->descripcion = $request->descripcion;
-        $material->ubicacion = $request->ubicacion;
-        $material->idCategoria = $request->idCategoria;
-
-        try {
-            $material->save();
-            Log::info('Material guardado exitosamente:', $material->toArray());
-        } catch (\Exception $e) {
-            Log::error('Error al guardar material:', ['error' => $e->getMessage()]);
-            return response()->json([
-                'message' => 'Error al crear material',
-                'error' => $e->getMessage()
-            ], 500);
+        // Si la validación falla, devolver errores
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        return response()->json([
-            'message' => 'Material creado exitosamente',
-            'material' => $material
-        ], 201);
+        try {
+            // Crear el material con los datos validados
+            $material = Material::create([
+                'unidadMedida' => $request->unidadMedida,
+                'descripcion' => $request->descripcion,
+                'ubicacion' => $request->ubicacion,
+                'idCategoria' => $request->idCategoria,
+            ]);
+
+            // Loggear la creación exitosa del material
+            Log::info('Material creado: ' . $material->codigo);
+
+            // Devolver una respuesta exitosa con los datos del material creado
+            return response()->json([
+                'message' => 'Material creado exitosamente',
+                'material' => $material
+            ], 201);
+        } catch (\Exception $e) {
+            // Loggear cualquier error que ocurra durante el proceso
+            Log::error('Error al crear el material: ' . $e->getMessage());
+            // Devolver una respuesta de error con los detalles
+            return response()->json(['error' => 'Error al crear el material', 'details' => $e->getMessage()], 500);
+        }
     }
 }

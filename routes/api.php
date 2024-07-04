@@ -2,6 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\MaterialController;
 
-Route::post('/insertar-material', [ApiController::class, 'insertarMaterialConCategoria']);
+Route::post('/materiales', [MaterialController::class, 'crearMaterial']);
