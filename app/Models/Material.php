@@ -21,4 +21,7 @@ class Material extends Model
     {
         return $this->belongsTo(Categoria::class, 'categoria_id', 'idCategoria');
     }
+    public function path(){
+        return '/materiales/'. $this->codigo;
+    }
 }
