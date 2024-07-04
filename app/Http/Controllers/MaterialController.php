@@ -29,12 +29,14 @@ class MaterialController extends Controller
         ]);
 
         $material = Material::where('codigo', $codigo)->firstOrFail();
-        
+
         $material->update($validated);
 
         return response()->json($material);
     }
 
+    
+    // MaterialController.php
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -42,19 +44,21 @@ class MaterialController extends Controller
             'unidadMedida' => 'required',
             'descripcion' => 'required',
             'ubicacion' => 'required',
-            'categoria_nombre' => 'required',
+            'categoria_id' => 'required|exists:categorias,idCategoria', // Asegura que exista la categoría con ese ID
         ]);
 
-        $categoria = Categoria::firstOrCreate(['nombre' => $validated['categoria_nombre']]);
+        $categoria = Categoria::findOrFail($validated['categoria_id']); // Busca la categoría por ID
+
         $material = Material::create([
             'codigo' => $validated['codigo'],
             'unidadMedida' => $validated['unidadMedida'],
             'descripcion' => $validated['descripcion'],
             'ubicacion' => $validated['ubicacion'],
-            'idCategoria' => $categoria->idCategoria,
+            'categoria_id' => $categoria->idCategoria, // Asigna el ID de la categoría encontrada
         ]);
 
         return response()->json($material, 201);
     }
+
 
 }

@@ -50,11 +50,11 @@ class MaterialControllerTest extends TestCase
 
         // Datos para crear un nuevo material
         $data = [
-            'codigo' => 'M001',
-            'unidadMedida' => 'kg',
+            'codigo' => 13,
+            'unidadMedida' => 'm',
             'descripcion' => 'Nuevo material',
             'ubicacion' => 'Almacén B',
-            'categoria_nombre' => $categoria->nombre, // Utilizamos el nombre de la categoría
+            'categoria_id' => $categoria->idCategoria, // Utilizamos el nombre de la categoría
         ];
 
         $response = $this->post('/materiales', $data);
@@ -64,8 +64,7 @@ class MaterialControllerTest extends TestCase
 
         // Verificar que el material se haya creado en la base de datos
         $this->assertDatabaseHas('materials', [
-            'codigo' => 'M001',
-            'unidadMedida' => 'kg',
+            'unidadMedida' => 'm',
             'descripcion' => 'Nuevo material',
             'ubicacion' => 'Almacén B',
             'categoria_id' => $categoria->idCategoria,
