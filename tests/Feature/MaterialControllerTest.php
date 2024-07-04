@@ -20,7 +20,7 @@ class MaterialControllerTest extends TestCase
             'codigo' => '123',
             'unidadMedida' => 'kg',
             'descripcion' => 'Material de prueba',
-            'ubicacion' => 'Almacén A',
+            'ubicacion' => 'Almacén B',
             'categoria_nombre' => 'Categoría de prueba',
         ];
     
