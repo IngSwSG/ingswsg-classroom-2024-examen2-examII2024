@@ -42,4 +42,33 @@ class MaterialControllerTest extends TestCase
             'categoria_id' => $categoria->idCategoria,
         ]);
     }
+
+    /** @test */
+    public function it_stores_a_new_material()
+    {
+        $categoria = Categoria::factory()->create();
+
+        // Datos para crear un nuevo material
+        $data = [
+            'codigo' => 'M001',
+            'unidadMedida' => 'kg',
+            'descripcion' => 'Nuevo material',
+            'ubicacion' => 'Almacén B',
+            'categoria_nombre' => $categoria->nombre, // Utilizamos el nombre de la categoría
+        ];
+
+        $response = $this->post('/materiales', $data);
+
+        // Verificar que la respuesta sea exitosa (código 201)
+        $response->assertStatus(201);
+
+        // Verificar que el material se haya creado en la base de datos
+        $this->assertDatabaseHas('materials', [
+            'codigo' => 'M001',
+            'unidadMedida' => 'kg',
+            'descripcion' => 'Nuevo material',
+            'ubicacion' => 'Almacén B',
+            'categoria_id' => $categoria->idCategoria,
+        ]);
+    }
 }
