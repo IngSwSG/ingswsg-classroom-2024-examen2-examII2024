@@ -13,7 +13,7 @@ class MaterialControllerTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_updates_a_material()
+    public function ActualizarMaterial()
     {
         $categoria = Categoria::factory()->create();
 
@@ -21,24 +21,24 @@ class MaterialControllerTest extends TestCase
             'categoria_id' => $categoria->idCategoria,
         ]);
 
-        // Datos para actualizar el material
+      
         $data = [
-            'unidadMedida' => 'kg',
-            'descripcion' => 'Material actualizado',
-            'ubicacion' => 'Almacén A',
-            'idCategoria' => $categoria->idCategoria, // Utilizamos la misma categoría creada
+            'unidadMedida' => 'tons',
+            'descripcion' => 'Material actualizandose',
+            'ubicacion' => 'Zona zero',
+            'idCategoria' => $categoria->idCategoria, 
         ];
 
         $response = $this->put('/materiales/' . $material->codigo, $data);
 
-        // Verificar que la respuesta sea exitosa (código 200)
+      
         $response->assertStatus(200);
 
         $this->assertDatabaseHas('materials', [
             'codigo' => $material->codigo,
-            'unidadMedida' => 'kg',
-            'descripcion' => 'Material actualizado',
-            'ubicacion' => 'Almacén A',
+            'unidadMedida' => 'tons',
+            'descripcion' => 'Material actualizandose',
+            'ubicacion' => 'Zona zero',
             'categoria_id' => $categoria->idCategoria,
         ]);
     }
