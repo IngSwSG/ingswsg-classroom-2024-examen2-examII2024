@@ -9,7 +9,9 @@ class Unidad extends Model
 {
     use HasFactory;
 
-    protected $table = 'unidad'; 
+    protected $table = 'unidad';
+
+    protected $primaryKey = 'idUnidad'; 
 
     protected $fillable = [
         'nombre',
@@ -18,5 +20,9 @@ class Unidad extends Model
     public function materiales()
     {
         return $this->hasMany(MaterialUnidad::class, 'idUnidad', 'idUnidad');
+    }
+    public function presupuestos()
+    {
+        return $this->hasMany(Presupuesto::class, 'unidad_id', 'idUnidad');
     }
 }

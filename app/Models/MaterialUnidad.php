@@ -20,4 +20,9 @@ class MaterialUnidad extends Model
     {
         return $this->belongsTo(Unidad::class, 'idUnidad', 'idUnidad');
     }
+
+    public function presupuesto()
+    {
+        return $this->hasOne(Presupuesto::class, 'materialunidad_id', 'id');
+    }
 }

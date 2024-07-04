@@ -20,4 +20,5 @@ class Requisicion extends Model
     {
         return $this->hasMany(ItemRequisicion::class, 'requisicion_id', 'idRequisicion');
     }
+    
 }
