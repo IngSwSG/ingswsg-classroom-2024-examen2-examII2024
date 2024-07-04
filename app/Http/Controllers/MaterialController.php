@@ -10,7 +10,7 @@ class MaterialController extends Controller
     public function create()
     {
         $categorias = Categoria::all();
-        return view('materials.create', compact('categorias'));
+        return view('material.create', compact('categorias'));
     }
 
     public function store(Request $request)
@@ -20,7 +20,7 @@ class MaterialController extends Controller
             'unidadMedida' => 'required|string',
             'descripcion' => 'required|string',
             'ubicacion' => 'required|string',
-            'idCategoria' => 'required|exists:categorias,idCategoria'
+            'idCategoria' => 'required|string|exists:categoria,nombre' 
         ]);
 
         $material = Material::create([
@@ -31,6 +31,6 @@ class MaterialController extends Controller
             'idCategoria' => $validated['idCategoria']
         ]);
 
-        return redirect()->route('materials.index')->with('success', 'Material creado exitosamente');
+        return redirect()->route('material.create')->with('success', 'Material creado exitosamente');
     }
 }

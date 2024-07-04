@@ -1,4 +1,4 @@
-resources/views/materials/create.blade.php
+{{-- resources/views/material/create.blade.php --}}
 
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,7 @@ resources/views/materials/create.blade.php
         </div>
     @endif
 
-    <form action="{{ route('materials.store') }}" method="POST">
+    <form action="{{ route('material.store') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="codigo">Código</label>
@@ -42,7 +42,7 @@ resources/views/materials/create.blade.php
             <label for="idCategoria">Categoría</label>
             <select class="form-control" id="idCategoria" name="idCategoria" required>
                 @foreach ($categorias as $categoria)
-                    <option value="{{ $categoria->idCategoria }}">{{ $categoria->nombre }}</option>
+                    <option value="{{ $categoria->nombre }}">{{ $categoria->nombre }}</option>
                 @endforeach
             </select>
         </div>

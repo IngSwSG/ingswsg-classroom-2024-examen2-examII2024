@@ -8,5 +8,5 @@ Route::get('/', function () {
 });
 
 
-Route::get('/materials/create', [MaterialController::class, 'create'])->name('materials.create');
-Route::post('/materials', [MaterialController::class, 'store'])->name('materials.store');
+Route::get('/material/create', [MaterialController::class, 'create'])->name('material.create');
+Route::post('/material', [MaterialController::class, 'store'])->name('material.store');

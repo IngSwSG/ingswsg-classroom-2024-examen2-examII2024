@@ -10,7 +10,12 @@ class Material extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['codigo', 'unidadMedida', 'descripcion', 'ubicacion', 'idCategoria'];
+    protected $fillable = [
+    'codigo', 
+    'unidadMedida', 
+    'descripcion', 
+    'ubicacion', 
+    'idCategoria'];
 
     public function categoria()
     {
