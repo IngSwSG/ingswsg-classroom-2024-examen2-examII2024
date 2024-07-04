@@ -22,14 +22,29 @@ class MaterialController extends Controller
          return response()->json($materiales);
     }
 
+    public function update(Request $request, $codigo)
+    {
+        $validated = $request->validate([
+            'unidadMedida' => 'sometimes|required',
+            'descripcion' => 'sometimes|required',
+            'ubicacion' => 'sometimes|required',
+            'idCategoria' => 'sometimes|required',
+        ]);
+
+        $material = Material::where('codigo', $codigo)->firstOrFail();
+        $material->update($validated);
+
+        return response()->json($material);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'codigo' => 'required|integer',
-            'unidadMedida' => 'required|string',
-            'descripcion' => 'required|string',
-            'ubicacion' => 'required|string',
-            'categoria_nombre' => 'required|string',
+            'codigo' => 'required',
+            'unidadMedida' => 'required',
+            'descripcion' => 'required',
+            'ubicacion' => 'required',
+            'categoria_nombre' => 'required',
         ]);
 
         $categoria = Categoria::firstOrCreate(['nombre' => $validated['categoria_nombre']]);

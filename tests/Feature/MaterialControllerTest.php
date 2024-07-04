@@ -1,87 +1,85 @@
 <?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 use App\Models\Material;
 use App\Models\Categoria;
 
-test('dado un material que no existe, insertarMaterial funciona correctamente', function () {
-    $categoriaNombre = $this->faker->word;
+class MaterialControllerTest extends TestCase
+{
+    use RefreshDatabase;
 
-    $data = [
-        'codigo' => $this->faker->randomNumber(),
-        'unidadMedida' => $this->faker->word,
-        'descripcion' => $this->faker->sentence,
-        'ubicacion' => $this->faker->address,
-        'categoria_nombre' => $categoriaNombre,
-    ];
-
-    $response = $this->postJson('/api/material', $data);
-
-    $response->assertStatus(201)
-             ->assertJsonFragment([
-                 'codigo' => $data['codigo'],
-                 'unidadMedida' => $data['unidadMedida'],
-                 'descripcion' => $data['descripcion'],
-                 'ubicacion' => $data['ubicacion'],
-             ]);
-
-    $this->assertDatabaseHas('materiales', [
-        'codigo' => $data['codigo'],
-        'unidadMedida' => $data['unidadMedida'],
-        'descripcion' => $data['descripcion'],
-        'ubicacion' => $data['ubicacion'],
-    ]);
-
-    $this->assertDatabaseHas('categorias', [
-        'nombre' => $categoriaNombre,
-    ]);
-});
-
-test('obtener todos los materiales funciona correctamente', function () {
-    $categoria1 = Categoria::factory()->create();
-    $material1 = Material::factory()->create(['idCategoria' => $categoria1->idCategoria]);
+    /**
+     * Test para insertar un material que no existe.
+     */
+    public function test_dadoUnMaterialQueNoExiste_insertarMaterial_funcionaCorrectamente()
+    {
+        $data = [
+            'codigo' => '123',
+            'unidadMedida' => 'kg',
+            'descripcion' => 'Material de prueba',
+            'ubicacion' => 'Almacén A',
+            'categoria_nombre' => 'Categoría de prueba',
+        ];
     
-    $categoria2 = Categoria::factory()->create();
-    $material2 = Material::factory()->create(['idCategoria' => $categoria2->idCategoria]);
+        $this->assertDatabaseMissing('materiales', ['codigo' => '123']);
+        $this->assertDatabaseMissing('categorias', ['nombre' => 'Categoría de prueba']);
+    
 
-    $response = $this->getJson('/api/material');
+        $response = $this->postJson('/api/material', $data);
+    
+        $this->assertDatabaseHas('materiales', ['codigo' => '123']);
+        $this->assertDatabaseHas('categorias', ['nombre' => 'Categoría de prueba']);
+    }
 
-    $response->assertStatus(200)
-             ->assertJsonFragment([
-                 'codigo' => $material1->codigo,
-                 'unidadMedida' => $material1->unidadMedida,
-                 'descripcion' => $material1->descripcion,
-                 'ubicacion' => $material1->ubicacion,
-                 'idCategoria' => $material1->idCategoria,
-             ])
-             ->assertJsonFragment([
-                 'codigo' => $material2->codigo,
-                 'unidadMedida' => $material2->unidadMedida,
-                 'descripcion' => $material2->descripcion,
-                 'ubicacion' => $material2->ubicacion,
-                 'idCategoria' => $material2->idCategoria,
-             ]);
-});
+    /**
+     * Test para actualizar un material existente.
+     */
+    public function test_actualizarMaterial_funcionaCorrectamente()
+    {
+        $categoria = Categoria::create(['nombre' => 'Categoría de prueba']);
+        $material = Material::create([
+            'codigo' => '1234',
+            'unidadMedida' => 'kg',
+            'descripcion' => 'Material de prueba',
+            'ubicacion' => 'Almacén A',
+            'idCategoria' => $categoria->idCategoria,
+        ]);
 
-test('dado un material existente, Actualiza Material funciona correctamente', function () {
+        $data = [
+            'unidadMedida' => 'litros',
+            'descripcion' => 'Descripción actualizada',
+            'ubicacion' => 'Almacén B',
+            'idCategoria' => $categoria->idCategoria,
+        ];
 
-    $categoria = Categoria::factory()->create();
-    $material = Material::factory()->create(['idCategoria' => $categoria->idCategoria]);
+        $response = $this->putJson("/api/material/{$material->codigo}", $data);
 
-    $newData = [
-        'unidadMedida' => $this->faker->word,
-        'descripcion' => $this->faker->sentence,
-        'ubicacion' => $this->faker->address,
-        'idCategoria' => $categoria->idCategoria,
-    ];
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('materiales', ['codigo' => '1234', 'descripcion' => 'Descripción actualizada']);
+    }
 
-    $response = $this->putJson("/api/material/{$material->codigo}", $newData);
+    /**
+     * Test para obtener todos los materiales.
+     */
+    public function test_obtenerMateriales_funcionaCorrectamente()
+    {
+        $categoria = Categoria::create(['nombre' => 'Categoría de prueba']);
+        Material::create([
+            'codigo' => '1234',
+            'unidadMedida' => 'kg',
+            'descripcion' => 'Material de prueba',
+            'ubicacion' => 'Almacén A',
+            'idCategoria' => $categoria->idCategoria,
+        ]);
 
-    $response->assertStatus(200)
-             ->assertJsonFragment($newData);
+        $response = $this->getJson('/api/material');
 
-    $this->assertDatabaseHas('materiales', [
-        'codigo' => $material->codigo,
-        'unidadMedida' => $newData['unidadMedida'],
-        'descripcion' => $newData['descripcion'],
-        'ubicacion' => $newData['ubicacion'],
-    ]);
-});
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            '*' => ['codigo', 'unidadMedida', 'descripcion', 'ubicacion', 'categoria' => ['nombre']]
+        ]);
+    }
+}

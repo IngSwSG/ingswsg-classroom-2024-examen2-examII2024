@@ -10,4 +10,5 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/material', [MaterialController::class, 'index']);
 Route::post('/material', [MaterialController::class, 'store']);
+Route::put('/material/{codigo}', [MaterialController::class, 'update']);
 
