@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Material;
-use illuminate\Http\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+
 class MaterialController extends Controller
 {
     public function index()
@@ -14,26 +17,21 @@ class MaterialController extends Controller
             'materiales' => $materiales
         ]);
     }
+
     public function update(Request $request, $codigo)
     {
-        
-        $validatedData = $request->validate([
-            'unidadMedida' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:255',
-            'ubicacion' => 'required|string|max:255',
-            'categoria_id' => 'required|exists:categorias,idCategoria',
+        $validated = $request->validate([
+            'unidadMedida' => 'sometimes|required',
+            'descripcion' => 'sometimes|required',
+            'ubicacion' => 'sometimes|required',
+            'idCategoria' => 'sometimes|required',
         ]);
 
-       
-        $material = Material::findOrFail($codigo);
-
+        $material = Material::where('codigo', $codigo)->firstOrFail();
         
-        $material->update($validatedData);
+        $material->update($validated);
 
-        
-        return response()->json([
-            'message' => 'Material actualizado',
-            'material' => $material
-        ]);
+        return response()->json($material);
     }
+
 }

@@ -9,5 +9,5 @@ Route::get('/', function () {
 });
 
 Route::get('/materiales', [MaterialController::class, 'index'])->name('materiales.index');
-Route::put('/Materiales/{codigo}', [MaterialController::class, 'update'])->name('Materiales.update');
+Route::put('/materiales/{codigo}', [MaterialController::class, 'update'])->name('materiales.update');
 
